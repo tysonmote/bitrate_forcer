@@ -31,21 +31,22 @@ class BitrateFixer
     end 
 
     def bitrate( path )
-      `ffmpeg -i "#{path}" -f crc 2>&1`.scan( /Duration.+bitrate: (\d+)/ ) do |rate, x|
-        return rate.to_i
+      rate = THRESHOLD
+      `ffmpeg -i "#{path}" -f crc 2>&1`.scan( /bitrate: (\d+)/ ) do |kbps, x|
+        rate = kbps.to_i
       end
-      return THRESHOLD # Assume we don't need to do anything.
+      rate
     end
     
     def convert_mp3( path )
-      return unless bitrate( path ) >= THRESHOLD
-      tmp_path = temporary_path( path ) 
+      return if bitrate( path ) >= THRESHOLD
+      tmp_path = temporary_path( path )
       `ffmpeg -i "#{path}" -acodec libmp3lame -ab #{BITRATE}k "#{tmp_path}"`
       finalize( path, tmp_path )
     end
     
     def convert_m4a( path )
-      return unless bitrate( path ) >= THRESHOLD
+      return if bitrate( path ) >= THRESHOLD
       tmp_path = temporary_path( path )
       `ffmpeg -i "#{path}" -strict experimental -acodec aac -ab #{BITRATE}k "#{tmp_path}"`
       finalize( path, tmp_path )
