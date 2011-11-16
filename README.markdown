@@ -9,6 +9,13 @@ using this to "force" iTunes to match them. This is probably stupid.
 This does the conversion in-place. After converting files, select them in iTunes
 (they'll be the "not eligible" files), right-click, and select "Add to iCloud".
 
+Dependencies
+------------
+
+You'll need ffmpeg. I recommend installing through homebrew:
+
+    brew install ffmpeg --use-gcc
+
 Usage
 -----
 
