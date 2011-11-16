@@ -8,8 +8,8 @@ class BitrateFixer
     MP3_EXTENSION = /\.mp3$/i
 
     # MP3/AAC files below this bitrate will be upconverted to `BITRATE`.
-    THRESHOLD = 100 # kb/s
-    BITRATE = 112
+    THRESHOLD = 128 # kb/s
+    BITRATE = 128
 
     def convert( path )
       return if path =~ /^\./
