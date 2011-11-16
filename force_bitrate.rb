@@ -39,14 +39,20 @@ class BitrateFixer
     end
     
     def convert_mp3( path )
-      return if bitrate( path ) >= THRESHOLD
+      if bitrate( path ) >= THRESHOLD
+        puts "Skipping: #{path}"
+        return
+      end
       tmp_path = temporary_path( path )
       `ffmpeg -i "#{path}" -acodec libmp3lame -ab #{BITRATE}k "#{tmp_path}"`
       finalize( path, tmp_path )
     end
     
     def convert_m4a( path )
-      return if bitrate( path ) >= THRESHOLD
+      if bitrate( path ) >= THRESHOLD
+        puts "Skipping: #{path}"
+        return
+      end
       tmp_path = temporary_path( path )
       `ffmpeg -i "#{path}" -strict experimental -acodec aac -ab #{BITRATE}k "#{tmp_path}"`
       finalize( path, tmp_path )
